@@ -1,0 +1,149 @@
+.DatePicker {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-width: 100px;
+  height: var(--cui-inputs-height);
+}
+
+/* Date input wrapper */
+
+.inputWrapper {
+  cursor: pointer;
+}
+
+.inputWrapper > input {
+  cursor: inherit;
+  min-width: unset;
+}
+/* Calendar */
+
+.calendar {
+  position: absolute;
+  left: 0;
+  top: calc(100% + var(--gap-between-input-wrapper-and-calendar));
+  width: 100%;
+  background: var(--cui-black-color-100);
+  transition: var(--transition-duration);
+  overflow: auto;
+  overscroll-behavior: none;
+}
+
+@media(prefers-color-scheme: dark) {
+  .calendar {
+    background: var(--cui-black-color-900);
+    color: var(--cui-black-color-300)
+  }
+}
+
+.calendar[class*="_isRemovedFromLayout"] {
+  display: none;
+}
+
+.calendar[class*="_isRevealedFromBottom"] {
+  top: unset;
+  bottom: calc(100% + var(--gap-between-input-wrapper-and-calendar));
+}
+
+.calendar[class*="_isRevealedFromRight"] {
+  left: unset;
+  right: 0;
+  transform: none;
+}
+
+.DatePicker:not([class*="_isOpened"]) > .calendar {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10%)
+}
+
+.DatePicker:not([class*="_isOpened"]) > .calendar[class*="_isRevealedFromBottom"] {
+  transform: translateY(-10%)
+}
+
+/* Time period selector */
+
+.timePeriodSelector {
+  display: flex;
+  align-items: center;
+}
+
+.timePeriodSelector:not(:first-child) {
+  border-top: 1px solid var(--cui-black-color-300)
+}
+
+@media(prefers-color-scheme: dark) {
+  .timePeriodSelector:not(:first-child) {
+    border-top-color: var(--cui-black-color-800)
+  }
+}
+
+.timePeriodSelector > button {
+  padding: 15px
+}
+
+.timePeriodSelector > button > svg {
+  width: 1em;
+  height: 1em;
+}
+
+.timePeriodSelector > button:first-child > svg {
+  transform: rotateZ(180deg)
+}
+
+.timePeriodSelector > span {
+  display: block;
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Days grid */
+
+.calendarDaysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 1px;
+  padding: 1px
+}
+
+.calendarDay {
+  text-align: center;
+  font-size: 10pt;
+  padding: 10px 0;
+  box-shadow: 0 0 0 1px var(--cui-black-color-300);
+}
+
+.calendarDay[class*="_isHoverable"] {
+  cursor: pointer;
+}
+
+.calendarDay[class*="_isHoverable"]:hover {
+  background: var(--cui-black-color-200)
+}
+
+@media(prefers-color-scheme: dark) {
+  .calendarDay {
+    box-shadow: 0 0 0 1px var(--cui-black-color-800)
+  }
+
+  .calendarDay[class*="_isHoverable"]:hover {
+    background: var(--cui-black-color-800)
+  }
+}
+
+.calendarDay[class*="_isSelected"] {
+  background: var(--cui-accent-color-700);
+  color: #fff
+}
+
+@media(prefers-color-scheme: dark) {
+  .calendarDay[class*="_isSelected"] {
+    background: var(--cui-accent-color-900)
+  }  
+}
+
+.calendarDaysGrid > .calendarDay:nth-child(-n+7) {
+  font-weight: bold;
+  font-size: 12pt
+}

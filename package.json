@@ -1,0 +1,52 @@
+{
+  "name": "@congritta-ui/datepicker",
+  "main": "dist/index.js",
+  "version": "0.0.1",
+  "packageManager": "yarn@3.5.1",
+  "devDependencies": {
+    "@types/node": "^20.2.1",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "esbuild": "^0.17.19",
+    "esbuild-css-modules-plugin": "^2.7.1",
+    "eslint": "latest",
+    "eslint-plugin-react": "latest",
+    "husky": "^8.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "build": "bash scripts/build.sh",
+    "dev": "bash scripts/dev.sh",
+    "lint": "bash scripts/lint.sh",
+    "prepare": "yarn husky install"
+  },
+  "dependencies": {
+    "@types/react": "^18.2.7",
+    "@types/react-dom": "^18.2.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+
+  "description": "Datepicker component for Congritta UI framework",
+  "keywords": [
+    "ui",
+    "styles",
+    "css",
+    "framework",
+    "frontend",
+    "congritta",
+    "component",
+    "datepicker"
+  ],
+  "author": {
+    "name": "Alex Congritta",
+    "email": "congritta@gmail.com",
+    "url": "https://congritta.com"
+  },
+  "homepage": "https://ui.congritta.com/docs/datepicker",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/congritta/ui-datepicker"
+  }
+}
