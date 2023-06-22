@@ -1,10 +1,23 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from "react";
 
-import styles from './index.module.css';
+import styles from "./index.module.css";
 
 const defaultTransitionDuration = 210;
 const defaultGapBetweenInputWrapperAndCalendar = 10;
-const defaultMonthNames = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const defaultMonthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
 const defaultWeekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const defaultWeekStart = 0;
 
@@ -21,6 +34,8 @@ function CalendarCell(props: {
   isSelected?: boolean,
   contents?: string | JSX.Element,
 
+  calendarDayClassName?: string
+
   onClick?(): void
 }) {
 
@@ -31,6 +46,7 @@ function CalendarCell(props: {
         styles.calendarDay,
         ...(props.dayNumber ? ['_isHoverable'] : []),
         ...(props.isSelected ? ['_isSelected'] : []),
+        ...(props.calendarDayClassName ? [props.calendarDayClassName] : [])
       ].join(' ')}
     >
       {props.dayNumber ?? props.contents}
@@ -92,7 +108,7 @@ export default function DatePicker(props: {
   // Handle closing
   function handleClosing(event?: Event) {
 
-    if(event?.target && datePickerRef.current?.contains(event.target as any)) return;
+    if(event?.target && datePickerRef.current?.contains(event.target as HTMLElement)) return;
 
     setIsOpened(false);
     setTimeout(() => {window.removeEventListener('click', handleClosing);}, 0);
@@ -153,7 +169,8 @@ export default function DatePicker(props: {
       ref={datePickerRef}
       className={[
         styles.DatePicker,
-        ...(isOpened ? ['_isOpened'] : [])
+        ...(isOpened ? ["_isOpened"] : []),
+        ...(props.datePickerClassName ? [props.datePickerClassName] : [])
       ].join(' ')}
       style={{
         '--transition-duration': `${props.transitionDuration ?? defaultTransitionDuration}ms`,
@@ -163,7 +180,10 @@ export default function DatePicker(props: {
 
       {/* Input wrapper */}
       <div
-        className={styles.inputWrapper}
+        className={[
+          styles.inputWrapper,
+          ...(props.inputWrapperClassName ? [props.inputWrapperClassName] : [])
+        ].join(" ")}
         onClick={() => !isOpened ? handleOpening() : null}
       >
         <input type="text" value={props.toHumanDate ? props.toHumanDate(date) : date.toLocaleDateString()} readOnly />
@@ -174,13 +194,20 @@ export default function DatePicker(props: {
         ref={calendarRef}
         className={[
           styles.calendar,
-          ...(floatingDirection.top ? ['_isRevealedFromBottom'] : []),
-          ...(floatingDirection.left ? ['_isRevealedFromRight'] : []),
-          ...(isCalendarRemovedFromLayout ? ['_isRemovedFromLayout'] : [])
-        ].join(' ')}
+          ...(floatingDirection.top ? ["_isRevealedFromBottom"] : []),
+          ...(floatingDirection.left ? ["_isRevealedFromRight"] : []),
+          ...(isCalendarRemovedFromLayout ? ["_isRemovedFromLayout"] : []),
+          ...(props.calendarClassName ? [props.calendarClassName] : [])
+        ].join(" ")}
+        style={{zIndex: !isCalendarRemovedFromLayout ? 999999 : undefined}}
       >
 
-        <div className={styles.timePeriodSelector}>
+        <div
+          className={[
+            styles.timePeriodSelector,
+            ...(props.timePeriodSelectorClassName ? [props.timePeriodSelectorClassName] : [])
+          ].join(" ")}
+        >
 
           <button
             type="button"
@@ -201,7 +228,12 @@ export default function DatePicker(props: {
           </button>
         </div>
 
-        <div className={styles.timePeriodSelector}>
+        <div
+          className={[
+            styles.timePeriodSelector,
+            ...(props.timePeriodSelectorClassName ? [props.timePeriodSelectorClassName] : [])
+          ].join(" ")}
+        >
 
           <button
             type="button"
@@ -223,28 +255,37 @@ export default function DatePicker(props: {
         </div>
 
 
-        <div className={styles.calendarDaysGrid}>
+        <div
+          className={[
+            styles.calendarDaysGrid,
+            ...(props.calendarDaysGridClassName ? [props.calendarDaysGridClassName] : [])
+          ].join(" ")}
+        >
 
           {(props.weekdayNames ?? defaultWeekdayNames).map((weekDay) => (
-            <CalendarCell key={weekDay} contents={weekDay} />
+            <CalendarCell key={weekDay} contents={weekDay} calendarDayClassName={props.calendarDayClassName} />
           ))}
 
-          {Array.from(Array((monthDaysOffset(date.getFullYear(), date.getMonth() + 1) || 7) - (props.weekStart ?? defaultWeekStart)).keys()).map((day) => (
-            <CalendarCell key={day} contents="" />
+          {Array.from(Array((monthDaysOffset(
+            date.getFullYear(),
+            date.getMonth() + 1
+          ) || 7) - (props.weekStart ?? defaultWeekStart)).keys()).map((day) => (
+            <CalendarCell key={day} contents="" calendarDayClassName={props.calendarDayClassName} />
           ))}
 
           {Array.from(Array(daysInMonth(date.getFullYear(), date.getMonth() + 1)).keys()).map((day) => (
             <CalendarCell
-              key={day+1}
+              key={day + 1}
               dayNumber={day + 1}
-              onClick={() => updateDate(date.getFullYear(), date.getMonth() + 1, day+1)}
+              onClick={() => updateDate(date.getFullYear(), date.getMonth() + 1, day + 1)}
               isSelected={
                 date.getFullYear() === valueDate.getFullYear()
                 &&
                 date.getMonth() === valueDate.getMonth()
                 &&
-                day+1 === valueDate.getDate()
+                day + 1 === valueDate.getDate()
               }
+              calendarDayClassName={props.calendarDayClassName}
             />
           ))}
         </div>

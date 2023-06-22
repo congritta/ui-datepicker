@@ -20,7 +20,7 @@ into your code
 Example:
 
 ```jsx
-export default MyComponentWidthDatePicker() {
+export default function MyComponentWidthDatePicker() {
   const [value, setValue] = useState('2000-01-01'); // ISO Date
 
   return (
